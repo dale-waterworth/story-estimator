@@ -1,0 +1,37 @@
+<html>
+  <head>
+    <script>
+      const socket = new WebSocket('ws://localhost:8001');
+      socket.onopen = function() {
+        console.log('Connected');
+
+        socket.onerror = function(error) {
+          console.error(error)
+        }
+
+        socket.onmessage = function(data) {
+          console.log(data);
+          document.getElementById('data').innerHTML = JSON.stringify(data.data);
+        };
+
+        socket.onclose = function(closed) {
+          console.log(closed);
+        }
+      };
+
+      function send() {
+        socket.send( JSON.stringify({
+          event: 'events',
+          data: 'from click',
+        }))
+      }
+    </script>
+  </head>
+
+  <body>
+  <button onclick='send()'>click</button>
+  <div>
+    <pre id='data'></pre>
+  </div>
+  </body>
+</html>
